@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#E3F2FD',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -65,5 +65,8 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontWeight: 600,
+    fontSize: 15,
+    fontFamily: 'sans-serif',
   },
 });

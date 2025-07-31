@@ -75,9 +75,24 @@ export default function ModalCadastrarVacinas({ visible, fecharModal }) {
     }
   };
 
+  const salvarVacinas = async () => {
+    if(!selectedPet || !nome_vacina || !data_aplicacao || !nome_clinica){
+      alert("Preenchar os campos obrigatórios!");
+      return;
+    }
+    try {
+      //fazer a chamada da api aqui
+      setMostrarModalSucesso(true);
+      limparModal();
+    }catch (error){
+      alert("Erro ao salvar vacina!");
+      console.error(error);
+    }
+  }
+
   return (
     <Modal
-      animationType="none"
+      animationType="slide"
       transparent={true}
       visible={visible}
       onRequestClose={fecharReiniciar}
@@ -194,20 +209,36 @@ export default function ModalCadastrarVacinas({ visible, fecharModal }) {
             </View>
           </Pressable>
 
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={fecharReiniciar}
-          >
-            <Text style={styles.textStyle}>Salvar Vacinas</Text>
-          </Pressable>
+          <View style={styles.botoes}>
+
+            <Pressable
+              style={styles.botaoFechar}
+              onPress={fecharReiniciar}
+            >
+              <Text style={styles.textStyle}>Fechar</Text>
+            </Pressable>
+
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={salvarVacinas}
+            >
+              <Text style={styles.textStyle}>Salvar</Text>
+            </Pressable>
+
+          </View>
+          
         </View>
       </View>
     
-        {mostrarModalSucesso && (
-            <ModalSucessoCadastro
-                fecharModal={() => setMostrarModalSucesso(false)}
-            />
-        )}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={mostrarModalSucesso}
+          onRequestClose={() => setMostrarModalSucesso(false)}
+        >
+          <ModalSucessoCadastro fecharModal={() => setMostrarModalSucesso(false)} />
+        </Modal>
+
     </Modal>
 
   );
@@ -383,6 +414,7 @@ const styles = StyleSheet.create({
 
   // Botão "Salvar Vacinas"
   button: {
+    width: screenWidth * 0.27,
     marginTop: 12,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -394,5 +426,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 10,
     elevation: 3,
+  },
+  botaoFechar: {
+    width: screenWidth * 0.27,
+    marginTop: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 25,
+    backgroundColor: "#FF0000",
+    shadowColor: "#FF0000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  botoes: {
+    width: screenWidth * 0.75,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 5,
   },
 });

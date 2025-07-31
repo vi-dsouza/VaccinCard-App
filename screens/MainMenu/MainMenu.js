@@ -5,6 +5,7 @@ import Menu from '../../components/Menu.js';
 import { Dimensions } from 'react-native';
 import ModalCadastrarPets from '../../components/ModalCadastrarPets.js';
 import ModalCadastrarVacinas from '../../components/ModalCadastrarVacinas.js';
+import ModalSucessoCadastro from '../../components/ModalSucessoCadastro.js';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -12,6 +13,7 @@ const screenHeight = Dimensions.get('window').height;
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleVaccin, setModalVisibleVaccin] = useState(false);
+  const [modalVisibleSucesso, setModalVisibleSucesso] = useState(false);
 
   return (
     <View style={styles.container}>

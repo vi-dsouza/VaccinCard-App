@@ -5,6 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as Linking from "expo-linking";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
+import ModalSucessoCadastro from "../components/ModalSucessoCadastro";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -21,6 +22,7 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
   const [fotoPetBase64, setFotoPetBase64] = useState("");
   const [permissionStatus, setPermissionStatus] = useState(null);
   const [enviar, setEnviar] = useState(false);
+  const [mostrarModalSucesso, setMostrarModalSucesso] = useState(false);
 
   useEffect(() => {
     if (visible) {
@@ -76,9 +78,24 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
     }
   };
 
+  const salvarPets = async () => {
+    if(!nome || !especie || !sexo){
+      alert("Preenchar os campos obrigatórios!");
+      return;
+    }
+    try {
+      //fazer a chamada da api aqui
+      setMostrarModalSucesso(true);
+      limparModal();
+    }catch (error){
+      alert("Erro ao salvar vacina!");
+      console.error(error);
+    }
+  }
+
   return (
     <Modal
-      animationType="none"
+      animationType="slide"
       transparent={true}
       visible={visible}
       onRequestClose={fecharReiniciar}
@@ -106,7 +123,7 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
           <TextInput
             style={styles.input}
             value={nome}
-            placeholder="Nome do Pet *"
+            placeholder="🐶 Nome do Pet *"
             onChangeText={(text) =>
               setNome(text.replace(/[^a-zA-ZÀ-ÿ\s]/g, ""))
             }
@@ -116,7 +133,7 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
           <TextInput
             style={styles.input}
             value={raca}
-            placeholder="Raça"
+            placeholder="🐾 Raça"
             onChangeText={(text) =>
               setRaca(text.replace(/[^a-zA-ZÀ-ÿ\s]/g, ""))
             }
@@ -126,7 +143,7 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
           <TextInput
             style={styles.input}
             value={especie}
-            placeholder="Espécie *"
+            placeholder="🐾 Espécie *"
             onChangeText={(text) =>
               setEspecie(text.replace(/[^a-zA-ZÀ-ÿ\s]/g, ""))
             }
@@ -145,7 +162,7 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
             >
               {data_nascimento
                 ? data_nascimento.toLocaleDateString()
-                : "Data de Nascimento"}
+                : "📆 Data de Nascimento"}
             </Text>
           </Pressable>
 
@@ -166,7 +183,7 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
           <TextInput
             style={styles.input}
             value={sexo}
-            placeholder="Sexo *"
+            placeholder="🧬 Sexo *"
             onChangeText={(text) =>
               setSexo(text.replace(/[^a-zA-ZÀ-ÿ\s]/g, ""))
             }
@@ -176,20 +193,42 @@ export default function ModalCadastrarPets({ visible, fecharModal }) {
           <TextInput
             style={styles.input}
             value={peso}
-            placeholder="Peso"
+            placeholder="⚖️ Peso"
             onChangeText={(text) => setPeso(text.replace(/[^0-9.]/g, ""))}
             keyboardType="numeric"
             maxLength={5}
           />
 
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={fecharReiniciar}
-          >
-            <Text style={styles.textStyle}>Cadastrar</Text>
-          </Pressable>
+          <View style={styles.botoes}>
+            
+            <Pressable
+              style={styles.botaoFechar}
+              onPress={fecharReiniciar}
+            >
+              <Text style={styles.textStyle}>Fechar</Text>
+            </Pressable>
+            
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={salvarPets}
+            >
+              <Text style={styles.textStyle}>Cadastrar</Text>
+            </Pressable>
+            
+          </View>
+
         </View>
       </View>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={mostrarModalSucesso}
+        onRequestClose={() => setMostrarModalSucesso(false)}
+      >
+        <ModalSucessoCadastro fecharModal={() => setMostrarModalSucesso(false)} />
+      </Modal>
+
     </Modal>
   );
 }
@@ -215,16 +254,39 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   button: {
-    borderRadius: 25,
+    width: screenWidth * 0.27,
+    marginTop: 12,
     paddingVertical: 12,
-    paddingHorizontal: 30,
-    elevation: 3,
-    marginTop: 40,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 25,
     backgroundColor: "#4B23F0",
     shadowColor: "#4B23F0",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
     shadowRadius: 10,
+    elevation: 3,
+  },
+  botaoFechar: {
+    width: screenWidth * 0.27,
+    marginTop: 15,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 25,
+    backgroundColor: "#FF0000",
+    shadowColor: "#FF0000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  botoes: {
+    width: screenWidth * 0.69,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 5,
   },
   textStyle: {
     color: "white",
@@ -265,12 +327,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     borderWidth: 1,
     borderRadius: 12,
-    backgroundColor: "#dcdcff",
-    borderColor: "#b3a7ff",
+    backgroundColor: "#FFA500",
+    borderColor: "#FFA500",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 10,
-    shadowColor: "#4B23F0",
+    shadowColor: "#FFA500",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -283,14 +345,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
     borderRadius: 100,
     backgroundColor: "#e6e6ff",
-    shadowColor: "#4B23F0",
+    shadowColor: "#FFA500",
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.25,
     shadowRadius: 15,
     elevation: 8,
   },
   textButton: {
-    color: "#4B23F0",
+    color: "black",
     fontFamily: "sans-serif",
     fontSize: 15,
     fontWeight: "700",

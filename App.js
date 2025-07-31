@@ -6,12 +6,15 @@ import MainMenu from './screens/MainMenu/MainMenu.js';
 import Vacinas from './screens/VacinasApp/Vacinas.js';
 import MeuPet from './screens/MeuPet/MeuPet.js';
 import Sobre from './screens/Sobre/Sobre.js';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+
     <NavigationContainer>
       {/* Rotas */}
       <Stack.Navigator initialRoute="Home">
@@ -93,6 +96,7 @@ export default function App() {
       </Stack.Navigator>
       
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 

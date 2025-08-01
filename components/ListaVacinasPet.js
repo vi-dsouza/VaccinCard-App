@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { Dimensions } from 'react-native';
+import ModalAtualizarVacinas from './ModalAtualizarVacinas';
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function ListaVacinasPet({ pet }) {
+  const [modalAtualizarVacinas, setModalAtualizarVacinas] = useState(false);
+
   if (!pet || !Array.isArray(pet.vacina)) return null;
 
   return (
@@ -14,18 +17,24 @@ export default function ListaVacinasPet({ pet }) {
         <Text key={index} style={styles.vacinaItem}>• {vacina}</Text>
       ))}
       <View style={styles.botaoEditar}>
-        <TouchableOpacity style={styles.editar}>
+        <TouchableOpacity 
+          style={styles.editar}
+          onPress={() => setModalAtualizarVacinas(true)}  
+        >
             <Text style={styles.textoBotao}>Editar</Text>
         </TouchableOpacity>
       </View>
-      
+      <ModalAtualizarVacinas
+        visible={modalAtualizarVacinas}
+        fecharModal={() => setModalAtualizarVacinas(false)}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
     marginVertical: 10,
     padding: 16,
     borderRadius: 8,

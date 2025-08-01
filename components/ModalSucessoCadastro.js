@@ -1,30 +1,16 @@
 import React from 'react';
-import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-
-//Não está aparecendo no botão de salvar vacina
+import { StyleSheet, Text, Pressable, View } from 'react-native';
 
 export default function ModalSucessoCadastro({ fecharModal }) {
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.centredView}>
-        <Modal
-          animationType='slide'
-          transparent={true}
-          visible={true} // sempre true, o controle vem do pai
-          onRequestClose={fecharModal}
-        >
-          <View style={styles.centredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Cadastro salvo com sucesso! 🎉</Text>
-              <Pressable style={[styles.button, styles.buttonClose]} onPress={fecharModal}>
-                <Text style={styles.textStyle}>Fechar</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View style={styles.centredView}>
+      <View style={styles.modalView}>
+        <Text style={styles.modalText}>Cadastro salvo com sucesso! 🎉</Text>
+        <Pressable style={[styles.button, styles.buttonClose]} onPress={fecharModal}>
+          <Text style={styles.textStyle}>Fechar</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 }
 
@@ -33,6 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.25)",
   },
   modalView: {
     margin: 20,
@@ -65,7 +52,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontWeight: 600,
+    fontWeight: '600',
     fontSize: 15,
     fontFamily: 'sans-serif',
   },
